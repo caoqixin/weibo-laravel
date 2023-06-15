@@ -16,7 +16,7 @@
         <p>
             <Link
                 class="bg-green-400 text-white p-3 rounded mt-2"
-                href="#"
+                :href="registerUrl"
                 as="button"
                 >现在注册</Link
             >
@@ -24,5 +24,7 @@
     </div>
 </template>
 <script setup>
-import NavLink from "../Shared/Components/NavLink.vue";
+defineProps({
+    registerUrl: String,
+});
 </script>

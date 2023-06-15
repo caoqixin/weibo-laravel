@@ -10,7 +10,9 @@ class StaticPagesController extends Controller
 {
     public function home(): ResponseFactory|Response
     {
-        return inertia('Home');
+        return inertia('Home', [
+            'registerUrl' => route('register')
+        ]);
     }
 
     public function about(): ResponseFactory|Response

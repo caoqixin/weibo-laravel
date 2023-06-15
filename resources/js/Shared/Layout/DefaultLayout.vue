@@ -12,9 +12,25 @@
     </section>
 
     <section class="p-6">
-        <div class="max-w-3xl mx-auto">
+        <main class="max-w-3xl mx-auto">
             <slot></slot>
-        </div>
+        </main>
+    </section>
+
+    <section class="p-6">
+        <footer class="max-w-3xl mx-auto flex justify-between border-t">
+            <a
+                href="https://learnku.com/laravel/courses"
+                target="_blank"
+                class="no-underline"
+            >
+                刻意练习，每日精进
+            </a>
+
+            <div class="float-left">
+                <Link href="/about" class="no-underline">关于</Link>
+            </div>
+        </footer>
     </section>
 </template>
 <script setup>

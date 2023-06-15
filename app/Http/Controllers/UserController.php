@@ -39,7 +39,8 @@ class UserController extends Controller
         return inertia('User/Show', [
             'user' => User::find($id),
             'gravatar' => User::find($id)->gravatar('140'),
-            'profileUrl' => route('users.show', ['user' => $id])
+            'profileUrl' => route('users.show', ['user' => $id]),
+            'welcome' => session()->has('welcome') ? session()->get('welcome') : ''
         ]);
     }
 

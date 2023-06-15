@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\StaticPagesController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,3 +21,4 @@ Route::get('/about', [StaticPagesController::class, 'about'])->name('about');
 Route::get('/help', [StaticPagesController::class, 'help'])->name('help');
 
 Route::get('/register', [AuthController::class, 'index'])->name('register');
+Route::resource('/users', UserController::class);

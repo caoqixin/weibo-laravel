@@ -55,13 +55,14 @@
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
                         <input
-                            id="remember-me"
-                            name="remember-me"
+                            id="remember"
+                            v-model="form.remember"
+                            name="remember"
                             type="checkbox"
                             class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                         />
                         <label
-                            for="remember-me"
+                            for="remember"
                             class="ml-2 block text-sm text-gray-900"
                             >记住我</label
                         >
@@ -95,6 +96,7 @@ import { useForm } from "@inertiajs/vue3";
 const form = useForm({
     email: "",
     password: "",
+    remember: false,
 });
 
 const login = () => {

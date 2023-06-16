@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Inertia\Response;
+use Inertia\ResponseFactory;
 
 class UserController extends Controller
 {
@@ -12,7 +14,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        return '11';
     }
 
     /**
@@ -34,7 +36,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id): Response|ResponseFactory
     {
         return inertia('User/Show', [
             'user' => User::find($id),
@@ -47,9 +49,12 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id): Response|ResponseFactory
     {
-        //
+        return inertia('User/Edit', [
+            'user' => User::find($id),
+            'gravatar' => User::find($id)->gravatar('140')
+        ]);
     }
 
     /**
@@ -57,7 +62,21 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+
+        $this->validate($request, [
+            'name' => 'required|max:50',
+            'password' => 'nullable|confirmed|min:6'
+        ]);
+
+        $user = User::find($id);
+        $data = [];
+        $data['name'] = $request->name;
+        if ($request->password) {
+            $data['password'] = $request->password;
+        }
+        $user->update($data);
+        session()->flash('welcome', '个人资料更新成功！');
+        return redirect()->route('users.show', $user->id);
     }
 
     /**

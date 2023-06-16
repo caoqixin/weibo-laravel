@@ -55,7 +55,7 @@
                                         </MenuItem>
                                         <MenuItem v-slot="{ active }">
                                             <Link
-                                                href="#"
+                                                :href="`/users/${user.info.id}/edit`"
                                                 :class="[
                                                     active ? 'bg-gray-100' : '',
                                                     'block px-4 py-2 text-sm text-gray-700',
@@ -67,6 +67,7 @@
                                             <Link
                                                 href="/logout"
                                                 method="delete"
+                                                as="button"
                                                 :class="[
                                                     active ? 'bg-gray-100' : '',
                                                     'block px-4 py-2 text-sm text-gray-700',
@@ -146,15 +147,17 @@
                         >
                         <DisclosureButton
                             as="a"
-                            href="#"
+                            :href="`/users/${user.info.id}/edit`"
                             class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
                             >编辑资料</DisclosureButton
                         >
-                        <DisclosureButton
-                            as="a"
-                            href="#"
+
+                        <Link
+                            href="/logout"
+                            method="delete"
+                            as="DisclosureButton"
                             class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
-                            >退出</DisclosureButton
+                            >退出</Link
                         >
                     </div>
                 </div>

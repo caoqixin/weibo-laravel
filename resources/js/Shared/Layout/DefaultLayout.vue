@@ -23,6 +23,5 @@ const page = usePage();
 
 const isLogin = computed(() => page.props.isLogin);
 const user = computed(() => page.props.auth);
-console.log(user.value);
 </script>
 <script></script>

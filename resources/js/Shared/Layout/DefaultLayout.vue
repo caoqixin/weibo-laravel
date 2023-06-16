@@ -1,15 +1,7 @@
 <template>
-    <section class="p-6 bg-gray-700">
-        <header class="flex justify-between">
-            <Link
-                href="/"
-                as="h1"
-                class="font-bold text-lg cursor-pointer text-white"
-                >Weibo</Link
-            >
-            <Nav />
-        </header>
-    </section>
+    <header class="bg-gray-800">
+        <Header :isLogin="isLogin" :user="user"></Header>
+    </header>
 
     <section class="p-6">
         <main class="max-w-3xl mx-auto">
@@ -18,22 +10,19 @@
     </section>
 
     <section class="p-6">
-        <footer class="max-w-3xl mx-auto flex justify-between border-t">
-            <a
-                href="https://learnku.com/laravel/courses"
-                target="_blank"
-                class="no-underline"
-            >
-                刻意练习，每日精进
-            </a>
-
-            <div class="float-left">
-                <Link href="/about" class="no-underline">关于</Link>
-            </div>
-        </footer>
+        <Footer />
     </section>
 </template>
 <script setup>
-import Nav from "../Components/Nav.vue";
+import Footer from "./Footer.vue";
+import Header from "./Header.vue";
+import { usePage } from "@inertiajs/vue3";
+import { computed } from "vue";
+
+const page = usePage();
+
+const isLogin = computed(() => page.props.isLogin);
+const user = computed(() => page.props.auth);
+console.log(user.value);
 </script>
 <script></script>

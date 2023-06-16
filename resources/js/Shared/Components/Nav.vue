@@ -15,4 +15,3 @@
 <script setup>
 import NavLink from "./NavLink.vue";
 </script>
-<script></script>

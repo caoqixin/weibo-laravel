@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\StaticPagesController;
 use App\Http\Controllers\UserController;
@@ -16,10 +17,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/login', [LoginController::class, 'index'])->name('login');
+Route::post('/login', [LoginController::class, 'auth'])->name('login.auth');
+Route::delete('/logout', [LoginController::class, 'logout'])->name('login.logout');
+
 Route::get('/', [StaticPagesController::class, 'home'])->name('home');
 Route::get('/about', [StaticPagesController::class, 'about'])->name('about');
 Route::get('/help', [StaticPagesController::class, 'help'])->name('help');
 
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
 Route::post('register', [RegisterController::class, 'register'])->name('register.create');
-Route::resource('/users', UserController::class);
+
+Route::middleware('auth')->group(function () {
+    Route::resource('/users', UserController::class);
+});

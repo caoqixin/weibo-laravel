@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Response;
 use Inertia\ResponseFactory;
 
@@ -18,11 +21,15 @@ class UserController extends Controller
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
-            'gravatar' => $user->gravatar('140')
+            'gravatar' => $user->gravatar('140'),
+            'can' => [
+                'delete' => \request()->user()->can('delete', $user)
+            ]
         ]);
 
         return inertia('User/Index', [
-            'users' => $user
+            'users' => $user,
+            'message' => session()->has('msg') ? session()->get('msg') : ''
         ]);
     }
 
@@ -70,6 +77,7 @@ class UserController extends Controller
 
     /**
      * Update the specified resource in storage.
+     * @throws AuthorizationException
      */
     public function update(Request $request, string $id)
     {
@@ -94,9 +102,19 @@ class UserController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * @throws AuthorizationException
      */
-    public function destroy(string $id)
+    public function destroy(string $id): RedirectResponse
     {
-        //
+        $user = User::find($id);
+        if (Auth::user()->can('delete', $user)) {
+            $user->delete();
+
+            session()->flash('msg', '用户删除成功');
+            return back();
+        }
+
+        session()->flash('msg', '用户删除失败, 您没有该权限');
+        return back();
     }
 }

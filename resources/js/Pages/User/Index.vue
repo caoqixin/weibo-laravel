@@ -1,6 +1,16 @@
 <template>
     <Head title="用户列表" />
 
+    <div v-if="message" class="rounded-md bg-green-50 p-4 mb-2">
+        <div class="flex">
+            <div class="ml-3">
+                <p class="text-sm font-medium text-green-800">
+                    {{ message }}
+                </p>
+            </div>
+        </div>
+    </div>
+
     <ul role="list" class="divide-y divide-gray-100">
         <li
             v-for="user in users.data"
@@ -22,6 +32,18 @@
                     </p>
                 </div>
             </div>
+
+            <div class="hidden sm:flex sm:flex-col sm:items-end">
+                <Link
+                    v-if="user.can.delete"
+                    :href="`/users/${user.id}`"
+                    method="delete"
+                    as="button"
+                    class="inline-flex items-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                >
+                    删除
+                </Link>
+            </div>
         </li>
     </ul>
 
@@ -33,5 +55,6 @@
 import Pagination from "../../Shared/Components/Pagination.vue";
 defineProps({
     users: Object,
+    message: String,
 });
 </script>

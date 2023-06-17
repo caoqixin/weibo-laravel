@@ -3,7 +3,7 @@
 
     <ul role="list" class="divide-y divide-gray-100">
         <li
-            v-for="user in users"
+            v-for="user in users.data"
             :key="user.id"
             class="flex justify-between gap-x-6 py-5"
         >
@@ -24,8 +24,13 @@
             </div>
         </li>
     </ul>
+
+    <div class="mt-6 flex justify-center">
+        <Pagination :links="users.links" />
+    </div>
 </template>
 <script setup>
+import Pagination from "../../Shared/Components/Pagination.vue";
 defineProps({
     users: Object,
 });

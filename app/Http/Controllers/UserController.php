@@ -12,9 +12,9 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index():Response|ResponseFactory
+    public function index(): Response|ResponseFactory
     {
-        $user = User::all()->map(fn($user) => [
+        $user = User::paginate(10)->through(fn($user) => [
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
@@ -74,7 +74,7 @@ class UserController extends Controller
     public function update(Request $request, string $id)
     {
         // 添加授权
-        $this->authorize('update', [$request->user(),User::class]);
+        $this->authorize('update', [$request->user(), User::class]);
 
         $this->validate($request, [
             'name' => 'required|max:50',

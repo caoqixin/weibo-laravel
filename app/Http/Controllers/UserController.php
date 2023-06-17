@@ -12,9 +12,18 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index():Response|ResponseFactory
     {
-        return '11';
+        $user = User::all()->map(fn($user) => [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'gravatar' => $user->gravatar('140')
+        ]);
+
+        return inertia('User/Index', [
+            'users' => $user
+        ]);
     }
 
     /**

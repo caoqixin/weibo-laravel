@@ -17,17 +17,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/login', [LoginController::class, 'index'])->name('login');
-Route::post('/login', [LoginController::class, 'auth'])->name('login.auth');
-Route::delete('/logout', [LoginController::class, 'logout'])->name('login.logout');
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [LoginController::class, 'index'])->name('login');
+    Route::post('/login', [LoginController::class, 'auth'])->name('login.auth');
+    Route::get('/register', [RegisterController::class, 'index'])->name('register');
+    Route::post('register', [RegisterController::class, 'register'])->name('register.create');
+});
+
 
 Route::get('/', [StaticPagesController::class, 'home'])->name('home');
 Route::get('/about', [StaticPagesController::class, 'about'])->name('about');
 Route::get('/help', [StaticPagesController::class, 'help'])->name('help');
 
-Route::get('/register', [RegisterController::class, 'index'])->name('register');
-Route::post('register', [RegisterController::class, 'register'])->name('register.create');
+
 
 Route::middleware('auth')->group(function () {
     Route::resource('/users', UserController::class);
+    Route::delete('/logout', [LoginController::class, 'logout'])->name('login.logout');
 });

@@ -51,6 +51,8 @@ class UserController extends Controller
      */
     public function edit(string $id): Response|ResponseFactory
     {
+        // 添加授权
+        $this->authorize('update', [User::find($id), User::class]);
         return inertia('User/Edit', [
             'user' => User::find($id),
             'gravatar' => User::find($id)->gravatar('140')
@@ -62,6 +64,8 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // 添加授权
+        $this->authorize('update', [$request->user(),User::class]);
 
         $this->validate($request, [
             'name' => 'required|max:50',

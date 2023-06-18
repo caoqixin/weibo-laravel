@@ -15,6 +15,7 @@
         <p class="mt-4">一切，将从这里开始。</p>
         <p>
             <Link
+                v-if="!$page.props.isLogin"
                 class="bg-green-400 text-white p-3 rounded mt-2"
                 :href="registerUrl"
                 as="button"

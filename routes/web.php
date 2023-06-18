@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\EmailVerifyController;
 use App\Http\Controllers\StaticPagesController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -30,8 +31,18 @@ Route::get('/about', [StaticPagesController::class, 'about'])->name('about');
 Route::get('/help', [StaticPagesController::class, 'help'])->name('help');
 
 
-
 Route::middleware('auth')->group(function () {
-    Route::resource('/users', UserController::class);
+    Route::resource('/users', UserController::class)->middleware('verified');
     Route::delete('/logout', [LoginController::class, 'logout'])->name('login.logout');
+
+    // 邮箱验证
+    Route::get('/email/verify', [EmailVerifyController::class, 'verify'])->name('verification.notice');
+
+    Route::get('/email/verify/{id}/{hash}', [EmailVerifyController::class, 'emailVerification'])
+        ->middleware('signed')
+        ->name('verification.verify');
+
+    Route::post('/email/verification-notification', [EmailVerifyController::class, 'sendEmail'])
+        ->middleware(['throttle:6,1'])
+        ->name('verification.send');
 });

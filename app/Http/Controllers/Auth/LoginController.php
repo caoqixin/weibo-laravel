@@ -13,7 +13,9 @@ class LoginController extends Controller
 {
     public function index(): Response|ResponseFactory
     {
-        return inertia('Auth/Login');
+        return inertia('Auth/Login', [
+            'status' => session('status')
+        ]);
     }
 
     public function auth(Request $request):RedirectResponse

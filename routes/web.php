@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\Auth\EmailVerifyController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\EmailVerifyController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\StaticPagesController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -23,7 +25,16 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [LoginController::class, 'auth'])->name('login.auth');
     Route::get('/register', [RegisterController::class, 'index'])->name('register');
     Route::post('register', [RegisterController::class, 'register'])->name('register.create');
+
+    // 重置密码
+    Route::get('/forgot-password', [ForgotPasswordController::class, 'create'])->name('password.request');
+
+    Route::post('/forgot-password', [ForgotPasswordController::class, 'store'])->name('password.email');
+
+    Route::get('/reset-password/{token}',[ResetPasswordController::class, 'create'])->name('password.reset');
+    Route::post('/reset-password', [ResetPasswordController::class, 'store'])->name('password.update');
 });
+
 
 
 Route::get('/', [StaticPagesController::class, 'home'])->name('home');

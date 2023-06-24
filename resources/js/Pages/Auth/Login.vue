@@ -1,6 +1,14 @@
 <template>
     <Head title="Login" />
-
+    <div v-if="status" class="rounded-md bg-green-50 p-4 mb-2">
+        <div class="flex">
+            <div class="ml-3">
+                <p class="text-sm font-medium text-green-800">
+                    {{ status }}
+                </p>
+            </div>
+        </div>
+    </div>
     <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
             <form class="space-y-6" @submit.prevent="login">
@@ -69,10 +77,10 @@
                     </div>
 
                     <div class="text-sm">
-                        <a
-                            href="#"
+                        <Link
+                            href="forgot-password"
                             class="font-medium text-indigo-600 hover:text-indigo-500"
-                            >忘记密码</a
+                            >忘记密码</Link
                         >
                     </div>
                 </div>
@@ -92,6 +100,9 @@
 </template>
 <script setup>
 import { useForm } from "@inertiajs/vue3";
+defineProps({
+    status: String,
+});
 
 const form = useForm({
     email: "",

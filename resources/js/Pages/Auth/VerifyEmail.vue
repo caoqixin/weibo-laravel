@@ -15,13 +15,12 @@
 
     <form @submit.prevent="submit">
         <div class="mt-4 flex items-center justify-between">
-            <button
-                class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150"
+            <PrimaryButton
                 :class="{ 'opacity-25': form.processing }"
                 :disabled="form.processing"
             >
                 重发
-            </button>
+            </PrimaryButton>
 
             <Link
                 href="/logout"
@@ -36,6 +35,7 @@
 <script setup>
 import { useForm } from "@inertiajs/vue3";
 import { computed } from "vue";
+import PrimaryButton from "../../Shared/Components/PrimaryButton.vue";
 
 const props = defineProps({
     status: {

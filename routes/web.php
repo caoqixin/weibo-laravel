@@ -22,19 +22,25 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'index'])->name('login');
-    Route::post('/login', [LoginController::class, 'auth'])->name('login.auth');
+    Route::post('/login', [LoginController::class, 'auth'])
+        ->middleware(['throttle:6,1'])
+        ->name('login.auth');
     Route::get('/register', [RegisterController::class, 'index'])->name('register');
-    Route::post('register', [RegisterController::class, 'register'])->name('register.create');
+    Route::post('register', [RegisterController::class, 'register'])
+        ->middleware(['throttle:10,60'])
+        ->name('register.create');
 
     // 重置密码
     Route::get('/forgot-password', [ForgotPasswordController::class, 'create'])->name('password.request');
 
-    Route::post('/forgot-password', [ForgotPasswordController::class, 'store'])->name('password.email');
+    Route::post('/forgot-password', [ForgotPasswordController::class, 'store'])->middleware(['throttle:3,10'])
+        ->name('password.email');
 
-    Route::get('/reset-password/{token}',[ResetPasswordController::class, 'create'])->name('password.reset');
-    Route::post('/reset-password', [ResetPasswordController::class, 'store'])->name('password.update');
+    Route::get('/reset-password/{token}', [ResetPasswordController::class, 'create'])->name('password.reset');
+    Route::post('/reset-password', [ResetPasswordController::class, 'store'])
+        ->middleware(['throttle:3,10'])
+        ->name('password.update');
 });
-
 
 
 Route::get('/', [StaticPagesController::class, 'home'])->name('home');
@@ -54,6 +60,6 @@ Route::middleware('auth')->group(function () {
         ->name('verification.verify');
 
     Route::post('/email/verification-notification', [EmailVerifyController::class, 'sendEmail'])
-        ->middleware(['throttle:6,1'])
+        ->middleware(['throttle:3,1'])
         ->name('verification.send');
 });

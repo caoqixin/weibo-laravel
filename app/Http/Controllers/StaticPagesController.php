@@ -14,13 +14,20 @@ class StaticPagesController extends Controller
         $feeds = [];
 
         if (Auth::check()) {
-            $feeds = Auth::user()->feed()->paginate(10);
+            $feeds = Auth::user()->feed()->paginate(10)->through(fn($feed) => [
+                'id' => $feed->id,
+                'content' => $feed->content,
+                'created_at' => $feed->created_at,
+                'can' => [
+                    'delete' => Auth::user()->can('delete', $feed)
+                ]
+            ]);
         }
 
         return inertia('Home', [
             'registerUrl' => route('register'),
             'message' => session()->has('message') ? session()->get('message') : '',
-            'feeds' => $feeds
+            'feeds' => $feeds,
         ]);
     }
 

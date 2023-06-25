@@ -64,6 +64,6 @@ Route::middleware('auth')->group(function () {
         ->middleware(['throttle:3,1'])
         ->name('verification.send');
 
-    Route::resource('/articles', ArticleController::class)
+    Route::resource('/articles', ArticleController::class, ['only' => ['store', 'destroy']])
         ->middleware('verified');
 });

@@ -56,14 +56,23 @@ class UserController extends Controller
     public function show(string $id): Response|ResponseFactory
     {
         $user = User::find($id);
-        $articles = $user->articles()->orderBy('created_at', 'desc')->paginate(20);
+        $articles = $user->articles()->orderBy('created_at', 'desc')->paginate(20)
+            ->through(fn($feed) => [
+                'id' => $feed->id,
+                'content' => $feed->content,
+                'created_at' => $feed->created_at,
+                'can' => [
+                    'delete' => Auth::user()->can('delete', $feed)
+                ]
+            ]);;
 
         return inertia('User/Show', [
             'user' => $user,
             'articles' => $articles,
             'gravatar' => $user->gravatar('140'),
             'profileUrl' => route('users.show', ['user' => $id]),
-            'welcome' => session()->has('welcome') ? session()->get('welcome') : ''
+            'welcome' => session()->has('welcome') ? session()->get('welcome') : '',
+            'message' => session()->has('message') ? session()->get('message') : ''
         ]);
     }
 

@@ -35,14 +35,42 @@
 
     <div v-else>
         <ArticleForm :gravatar="$page.props.auth.gravatar" />
+
+        <!-- 文章 -->
+        <div>
+            <h4 class="font-bold text-lg mt-8 border-b-2 border-b-gray-400">
+                微博列表
+            </h4>
+            <ul
+                role="list"
+                class="divide-y divide-gray-200 mt-2"
+                :class="{ 'text-center': feeds.data.length == 0 }"
+            >
+                <div v-if="feeds.data.length != 0">
+                    <div v-for="feed in feeds.data" :key="feed.id">
+                        <ShowArticle
+                            :article="feed"
+                            :user_name="$page.props.auth.info.name"
+                            :gravatar="$page.props.auth.gravatar"
+                        />
+                    </div>
+                </div>
+                <div v-else>暂时还没有数据哦!!</div>
+            </ul>
+            <div class="mt-6 flex justify-center">
+                <Pagination :links="feeds.links" />
+            </div>
+        </div>
     </div>
 </template>
 <script setup>
-import { computed } from "vue";
 import ArticleForm from "../Shared/Components/ArticleForm.vue";
+import ShowArticle from "../Shared/Components/ShowArticle.vue";
+import Pagination from "../Shared/Components/Pagination.vue";
 
 const props = defineProps({
     registerUrl: String,
     message: String,
+    feeds: Object,
 });
 </script>

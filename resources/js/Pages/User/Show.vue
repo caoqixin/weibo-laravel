@@ -15,12 +15,34 @@
         </Link>
         <h1 class="mt-4 mb-1 text-2xl">{{ user.name }}</h1>
     </div>
+
+    <!-- 文章 -->
+    <div>
+        <ul
+            role="list"
+            class="divide-y divide-gray-200 mt-2"
+            :class="{ 'text-center': articles.data.length == 0 }"
+        >
+            <div v-if="articles.data.length != 0">
+                <div v-for="article in articles.data" :key="article.id">
+                    <ShowArticle
+                        :article="article"
+                        :user_name="user.name"
+                        :gravatar="gravatar"
+                    />
+                </div>
+            </div>
+            <div v-else>暂时还没有数据哦!!</div>
+        </ul>
+    </div>
 </template>
 <script setup>
+import ShowArticle from "../../Shared/Components/ShowArticle.vue";
 const props = defineProps({
     user: Object,
     profileUrl: String,
     gravatar: String,
     welcome: String,
+    articles: Object,
 });
 </script>

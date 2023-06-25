@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\Auth\EmailVerifyController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -62,4 +63,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/email/verification-notification', [EmailVerifyController::class, 'sendEmail'])
         ->middleware(['throttle:3,1'])
         ->name('verification.send');
+
+    Route::resource('/articles', ArticleController::class)
+        ->middleware('verified');
 });

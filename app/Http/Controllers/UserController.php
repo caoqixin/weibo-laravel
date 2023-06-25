@@ -7,6 +7,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 use Inertia\Response;
 use Inertia\ResponseFactory;
 
@@ -54,9 +55,13 @@ class UserController extends Controller
      */
     public function show(string $id): Response|ResponseFactory
     {
+        $user = User::find($id);
+        $articles = $user->articles()->orderBy('created_at', 'desc')->paginate(20);
+
         return inertia('User/Show', [
-            'user' => User::find($id),
-            'gravatar' => User::find($id)->gravatar('140'),
+            'user' => $user,
+            'articles' => $articles,
+            'gravatar' => $user->gravatar('140'),
             'profileUrl' => route('users.show', ['user' => $id]),
             'welcome' => session()->has('welcome') ? session()->get('welcome') : ''
         ]);
@@ -64,22 +69,24 @@ class UserController extends Controller
 
     /**
      * Show the form for editing the specified resource.
+     * @throws AuthorizationException
      */
     public function edit(string $id): Response|ResponseFactory
     {
+        $user = User::find($id);
         // 添加授权
-        $this->authorize('update', [User::find($id), User::class]);
+        $this->authorize('update', [$user, User::class]);
         return inertia('User/Edit', [
-            'user' => User::find($id),
-            'gravatar' => User::find($id)->gravatar('140')
+            'user' => $user,
+            'gravatar' => $user->gravatar('140')
         ]);
     }
 
     /**
      * Update the specified resource in storage.
-     * @throws AuthorizationException
+     * @throws AuthorizationException|ValidationException
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id): RedirectResponse
     {
         // 添加授权
         $this->authorize('update', [$request->user(), User::class]);
@@ -102,7 +109,6 @@ class UserController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     * @throws AuthorizationException
      */
     public function destroy(string $id): RedirectResponse
     {

@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -70,4 +71,41 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->articles()->orderBy('created_at', 'desc');
     }
+
+    // 粉丝
+    public function fans(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'followers', 'user_id', 'follower_id');
+    }
+
+    // 关注的人
+    public function followings(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'followers', 'follower_id', 'user_id');
+    }
+
+    // 关注用户
+    public function follow($users_ids): void
+    {
+        if (!is_array($users_ids)) {
+            $users_ids = compact($users_ids);
+        }
+
+        $this->followings()->syncWithoutDetaching($users_ids);
+    }
+
+    public function unfollow($users_ids): void
+    {
+        if (!is_array($users_ids)) {
+            $users_ids = compact($users_ids);
+        }
+
+        $this->followings()->detach($users_ids);
+    }
+
+    public function isFollowing($user_id):bool
+    {
+        return $this->followings->contains($user_id);
+    }
+
 }

@@ -47,7 +47,7 @@ const form = useForm({
 
 const submit = () => {
     form.post("/articles", {
-        onFinish: () => form.reset("content"),
+        onSuccess: () => form.reset("content"),
     });
 };
 </script>

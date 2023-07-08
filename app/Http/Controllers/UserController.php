@@ -72,7 +72,12 @@ class UserController extends Controller
             'gravatar' => $user->gravatar('140'),
             'profileUrl' => route('users.show', ['user' => $id]),
             'welcome' => session()->has('welcome') ? session()->get('welcome') : '',
-            'message' => session()->has('message') ? session()->get('message') : ''
+            'message' => session()->has('message') ? session()->get('message') : '',
+            'statuses' => [
+                'articles' => $user->articles()->count(),
+                'fans' => count($user->fans),
+                'followings' => count($user->followings)
+            ]
         ]);
     }
 

@@ -18,12 +18,13 @@
             </div>
         </div>
     </div>
-    <div class="flex flex-col items-center">
-        <Link :href="profileUrl" class="pb-3">
-            <img :src="gravatar" :alt="user.name" class="w-14 rounded-full" />
-        </Link>
-        <h1 class="mt-4 mb-1 text-2xl">{{ user.name }}</h1>
-    </div>
+    <Gravatar
+        :profile-url="profileUrl"
+        :user-name="user.name"
+        :gravatar-src="gravatar"
+    />
+
+    <Stats :statuses="statuses" />
 
     <!-- 文章 -->
     <div>
@@ -47,6 +48,9 @@
 </template>
 <script setup>
 import ShowArticle from "../../Shared/Components/ShowArticle.vue";
+import Gravatar from "../../Shared/Components/Gravatar.vue";
+import Stats from "../../Shared/Components/Stats.vue";
+
 const props = defineProps({
     user: Object,
     profileUrl: String,
@@ -54,5 +58,6 @@ const props = defineProps({
     welcome: String,
     message: String,
     articles: Object,
+    statuses: Object,
 });
 </script>

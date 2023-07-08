@@ -14,17 +14,17 @@
                             article.created_at
                         }}</i>
                     </h3>
-                    <div class="hidden sm:flex sm:flex-col sm:items-end">
-                        <button
-                            v-if="article.can.delete"
-                            class="inline-flex items-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-                            @click="deleteButton"
-                        >
-                            删除
-                        </button>
-                    </div>
                 </div>
                 <p class="text-sm text-gray-500">{{ article.content }}</p>
+                <div class="hidden sm:flex sm:flex-col sm:items-end">
+                    <button
+                        v-if="article.can.delete"
+                        class="inline-flex items-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                        @click="deleteButton"
+                    >
+                        删除
+                    </button>
+                </div>
             </div>
         </div>
     </li>

@@ -28,6 +28,11 @@ class StaticPagesController extends Controller
             'registerUrl' => route('register'),
             'message' => session()->has('message') ? session()->get('message') : '',
             'feeds' => $feeds,
+            'statuses' => [
+                'articles' => Auth::user()->articles()->count(),
+                'fans' => count(Auth::user()->fans),
+                'followings' => count(Auth::user()->followings)
+            ]
         ]);
     }
 

@@ -88,7 +88,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function follow($users_ids): void
     {
         if (!is_array($users_ids)) {
-            $users_ids = compact($users_ids);
+            $users_ids = compact('users_ids');
         }
 
         $this->followings()->syncWithoutDetaching($users_ids);
@@ -97,7 +97,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function unfollow($users_ids): void
     {
         if (!is_array($users_ids)) {
-            $users_ids = compact($users_ids);
+            $users_ids = compact('users_ids');
         }
 
         $this->followings()->detach($users_ids);

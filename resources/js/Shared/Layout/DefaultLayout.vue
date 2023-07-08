@@ -4,7 +4,7 @@
     </header>
 
     <section class="p-6">
-        <main class="max-w-3xl mx-auto">
+        <main class="max-w-4xl mx-auto">
             <slot></slot>
         </main>
     </section>

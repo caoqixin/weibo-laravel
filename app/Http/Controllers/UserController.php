@@ -34,21 +34,6 @@ class UserController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
@@ -75,8 +60,14 @@ class UserController extends Controller
             'message' => session()->has('message') ? session()->get('message') : '',
             'statuses' => [
                 'articles' => $user->articles()->count(),
-                'fans' => count($user->fans),
-                'followings' => count($user->followings)
+                'fans' => [
+                    'count' => count($user->fans),
+                    'link' => route('users.fans', $user->id)
+                ],
+                'followings' => [
+                    'count' => count($user->followings),
+                    'link' => route('users.followings', $user->id)
+                ]
             ]
         ]);
     }
@@ -136,5 +127,38 @@ class UserController extends Controller
 
         session()->flash('msg', '用户删除失败, 您没有该权限');
         return back();
+    }
+
+    public function fans(User $user): Response|ResponseFactory
+    {
+        $users = $user->fans()->paginate(30)->through(fn($user) => [
+            'id' => $user->id,
+            'name' => $user->name,
+            'gravatar' => $user->gravatar('140'),
+        ]);
+
+        $title = "{$user->name} 的粉丝";
+
+        return inertia('User/ShowFollow', [
+            'users' => $users,
+            'title' => $title
+        ]);
+    }
+
+    public function followings(User $user): Response|ResponseFactory
+    {
+        $users = $user->followings()->paginate(30)->through(fn($user) => [
+            'id' => $user->id,
+            'name' => $user->name,
+            'gravatar' => $user->gravatar('140'),
+        ]);
+
+        $title = "{$user->name} 关注的人";
+
+        return inertia('User/ShowFollow', [
+            'users' => $users,
+            'title' => $title
+        ]);
+
     }
 }

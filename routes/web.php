@@ -51,6 +51,8 @@ Route::get('/help', [StaticPagesController::class, 'help'])->name('help');
 
 Route::middleware('auth')->group(function () {
     Route::resource('/users', UserController::class)->middleware('verified');
+    Route::get('/users/{user}/followings', [UserController::class, 'followings'])->name('users.followings');
+    Route::get('/users/{user}/fans', [UserController::class, 'fans'])->name('users.fans');
     Route::delete('/logout', [LoginController::class, 'logout'])->name('login.logout');
 
     // 邮箱验证

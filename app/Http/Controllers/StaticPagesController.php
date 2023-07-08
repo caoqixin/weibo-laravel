@@ -30,8 +30,14 @@ class StaticPagesController extends Controller
             'feeds' => $feeds,
             'statuses' => [
                 'articles' => Auth::user()->articles()->count(),
-                'fans' => count(Auth::user()->fans),
-                'followings' => count(Auth::user()->followings)
+                'fans' => [
+                    'count' => count(Auth::user()->fans),
+                    'link' => route('users.fans', Auth::user()->id)
+                ],
+                'followings' => [
+                    'count' => count(Auth::user()->followings),
+                    'link' => route('users.followings', Auth::user()->id)
+                ]
             ]
         ]);
     }

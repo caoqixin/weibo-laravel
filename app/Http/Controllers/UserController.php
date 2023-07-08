@@ -24,8 +24,9 @@ class UserController extends Controller
             'email' => $user->email,
             'gravatar' => $user->gravatar('140'),
             'can' => [
-                'delete' => \request()->user()->can('delete', $user)
-            ]
+                'delete' => \request()->user()->can('delete', $user),
+            ],
+            'link' => route('users.show', $user->id)
         ]);
 
         return inertia('User/Index', [
@@ -47,8 +48,8 @@ class UserController extends Controller
                 'content' => $feed->content,
                 'created_at' => $feed->created_at,
                 'can' => [
-                    'delete' => Auth::user()->can('delete', $feed)
-                ]
+                    'delete' => Auth::user()->can('delete', $feed),
+                 ]
             ]);;
 
         return inertia('User/Show', [
@@ -68,7 +69,11 @@ class UserController extends Controller
                     'count' => count($user->followings),
                     'link' => route('users.followings', $user->id)
                 ]
-            ]
+            ],
+            'can' => [
+                'follow' => $user->can('follow', Auth::user())
+            ],
+            'isFollowing' => Auth::user()->isFollowing($user->id)
         ]);
     }
 

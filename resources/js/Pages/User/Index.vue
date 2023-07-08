@@ -17,7 +17,7 @@
             :key="user.id"
             class="flex justify-between gap-x-6 py-5"
         >
-            <div class="flex gap-x-4">
+            <Link class="flex gap-x-4" :href="user.link">
                 <img
                     class="h-12 w-12 flex-none rounded-full bg-gray-50"
                     :src="user.gravatar"
@@ -31,7 +31,7 @@
                         {{ user.email }}
                     </p>
                 </div>
-            </div>
+            </Link>
 
             <div class="hidden sm:flex sm:flex-col sm:items-end">
                 <Link

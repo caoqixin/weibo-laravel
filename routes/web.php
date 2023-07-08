@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\FollowersController;
 use App\Http\Controllers\StaticPagesController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -51,8 +52,13 @@ Route::get('/help', [StaticPagesController::class, 'help'])->name('help');
 
 Route::middleware('auth')->group(function () {
     Route::resource('/users', UserController::class)->middleware('verified');
+
     Route::get('/users/{user}/followings', [UserController::class, 'followings'])->name('users.followings');
     Route::get('/users/{user}/fans', [UserController::class, 'fans'])->name('users.fans');
+
+    Route::post('/users/followers/{user}', [FollowersController::class, 'store'])->name('followers.store');
+    Route::delete('/users/followers/{user}', [FollowersController::class, 'destroy'])->name('followers.destroy');
+
     Route::delete('/logout', [LoginController::class, 'logout'])->name('login.logout');
 
     // 邮箱验证

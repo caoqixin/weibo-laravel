@@ -47,4 +47,9 @@ class UserPolicy
         return $user->is_admin && ($user->id !== $model->id);
     }
 
+    public function follow(User $currentUser, User $user): bool
+    {
+        return $currentUser->id !== $user->id;
+    }
+
 }

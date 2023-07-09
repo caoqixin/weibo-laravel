@@ -21,13 +21,12 @@
                 </div>
                 <div class="flex pt-2 justify-end">
                     <div class="flex-shrink-0">
-                        <button
+                        <SaveButton
                             type="submit"
-                            class="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                             :disabled="form.processing"
+                            class="inline-flex items-center"
+                            >发布</SaveButton
                         >
-                            发布
-                        </button>
                     </div>
                 </div>
             </form>
@@ -36,6 +35,7 @@
 </template>
 <script setup>
 import { useForm } from "@inertiajs/vue3";
+import SaveButton from "./Buttons/SaveButton.vue";
 
 defineProps({
     gravatar: String,

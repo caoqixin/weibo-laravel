@@ -35,7 +35,7 @@
 <script setup>
 import { useForm } from "@inertiajs/vue3";
 import { computed } from "vue";
-import PrimaryButton from "../../Shared/Components/PrimaryButton.vue";
+import PrimaryButton from "../../Shared/Components/Buttons/PrimaryButton.vue";
 
 const props = defineProps({
     status: {

@@ -67,7 +67,7 @@
 </template>
 <script setup>
 import { useForm } from "@inertiajs/vue3";
-import PrimaryButton from "../../Shared/Components/PrimaryButton.vue";
+import PrimaryButton from "../../Shared/Components/Buttons/PrimaryButton.vue";
 import InputLabel from "../../Shared/Components/InputLabel.vue";
 
 const props = defineProps({

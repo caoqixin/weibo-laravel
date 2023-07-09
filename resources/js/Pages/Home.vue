@@ -1,6 +1,6 @@
 <template>
     <Head title="主页"></Head>
-
+    <!-- 消息提示 -->
     <div v-if="message" class="rounded-md bg-green-50 p-4 mb-2">
         <div class="flex">
             <div class="ml-3">
@@ -32,9 +32,10 @@
             >
         </p>
     </div>
-
+    <!-- 内容主体 -->
     <div v-else class="flex">
         <div>
+            <!-- 发布表单 -->
             <ArticleForm :gravatar="$page.props.auth.gravatar" class="mt-2" />
 
             <!-- 文章 -->
@@ -60,7 +61,7 @@
                 </ul>
             </div>
         </div>
-
+        <!-- 用户信息 -->
         <div class="mt-2">
             <div class="ml-7">
                 <Gravatar
@@ -73,6 +74,7 @@
             </div>
         </div>
     </div>
+    <!-- 分页 -->
     <div class="mt-6 flex justify-center">
         <Pagination :links="feeds.links" />
     </div>

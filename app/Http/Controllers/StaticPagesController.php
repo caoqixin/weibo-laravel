@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Response;
 use Inertia\ResponseFactory;
@@ -12,8 +11,22 @@ class StaticPagesController extends Controller
     public function home(): ResponseFactory|Response
     {
         $feeds = [];
+        // 是否已经登陆
+        $isLogin = Auth::check();
 
-        if (Auth::check()) {
+        $statuses = [
+            'articles' => '',
+            'fans' => [
+                'count' => '',
+                'link' => ''
+            ],
+            'followings' => [
+                'count' => '',
+                'link' => ''
+            ]
+        ];
+
+        if ($isLogin) {
             $feeds = Auth::user()->feed()->paginate(10)->through(fn($feed) => [
                 'id' => $feed->id,
                 'content' => $feed->content,
@@ -24,23 +37,28 @@ class StaticPagesController extends Controller
                     'delete' => Auth::user()->can('delete', $feed)
                 ]
             ]);
+
+            $statuses = [
+                'articles' => [
+                    'count' => Auth::user()->articles()->count(),
+                    'link' => route('users.show', Auth::user()->id)
+                ],
+                'fans' => [
+                    'count' => count(Auth::user()->fans),
+                    'link' => route('users.fans', Auth::user()->id)
+                ],
+                'followings' => [
+                    'count' => count(Auth::user()->followings),
+                    'link' => route('users.followings', Auth::user()->id)
+                ]
+            ];
         }
 
         return inertia('Home', [
             'registerUrl' => route('register'),
             'message' => session()->has('message') ? session()->get('message') : '',
             'feeds' => $feeds,
-            'statuses' => [
-                'articles' => Auth::check() ? Auth::user()->articles()->count() : '',
-                'fans' => [
-                    'count' => Auth::check() ? count(Auth::user()->fans) : '',
-                    'link' => Auth::check() ? route('users.fans', Auth::user()->id) : ''
-                ],
-                'followings' => [
-                    'count' => Auth::check() ? count(Auth::user()->followings) : '',
-                    'link' => Auth::check() ? route('users.followings', Auth::user()->id) : ''
-                ]
-            ]
+            'statuses' => $statuses
         ]);
     }
 

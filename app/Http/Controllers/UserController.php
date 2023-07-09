@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
@@ -41,7 +42,7 @@ class UserController extends Controller
      */
     public function show(string $id): Response|ResponseFactory
     {
-        $user = User::find($id);
+        $user = new UserResource(User::find($id));
         $articles = $user->articles()->orderBy('created_at', 'desc')->paginate(20)
             ->through(fn($feed) => [
                 'id' => $feed->id,
@@ -49,27 +50,29 @@ class UserController extends Controller
                 'created_at' => $feed->created_at,
                 'can' => [
                     'delete' => Auth::user()->can('delete', $feed),
-                 ]
-            ]);;
+                ]
+            ]);
+
+        $statuses = [
+            'articles' => [
+                'count' => $user->articles()->count(),
+                'link' => route('users.show', $user->id)
+            ],
+            'fans' => [
+                'count' => count($user->fans),
+                'link' => route('users.fans', $user->id)
+            ],
+            'followings' => [
+                'count' => count($user->followings),
+                'link' => route('users.followings', $user->id)
+            ]
+        ];
 
         return inertia('User/Show', [
             'user' => $user,
             'articles' => $articles,
-            'gravatar' => $user->gravatar('140'),
-            'profileUrl' => route('users.show', ['user' => $id]),
-            'welcome' => session()->has('welcome') ? session()->get('welcome') : '',
             'message' => session()->has('message') ? session()->get('message') : '',
-            'statuses' => [
-                'articles' => $user->articles()->count(),
-                'fans' => [
-                    'count' => count($user->fans),
-                    'link' => route('users.fans', $user->id)
-                ],
-                'followings' => [
-                    'count' => count($user->followings),
-                    'link' => route('users.followings', $user->id)
-                ]
-            ],
+            'statuses' => $statuses,
             'can' => [
                 'follow' => $user->can('follow', Auth::user())
             ],
@@ -113,7 +116,7 @@ class UserController extends Controller
             $data['password'] = $request->password;
         }
         $user->update($data);
-        session()->flash('welcome', '个人资料更新成功！');
+        session()->flash('message', '个人资料更新成功！');
         return redirect()->route('users.show', $user->id);
     }
 

@@ -31,7 +31,7 @@ class LoginController extends Controller
             $request->session()->regenerate();
 
             $user = Auth::user();
-            session()->flash('welcome', "{$user->name},欢迎回来");
+            session()->flash('message', "{$user->name},欢迎回来");
 
             return redirect()->route('users.show', [$user]);
         }

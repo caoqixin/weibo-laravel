@@ -1,14 +1,5 @@
 <template>
-    <Head :title="`${user.name}'s Profile`" />
-    <div v-if="welcome" class="rounded-md bg-green-50 p-4 mb-2">
-        <div class="flex">
-            <div class="ml-3">
-                <p class="text-sm font-medium text-green-800">
-                    {{ welcome }}
-                </p>
-            </div>
-        </div>
-    </div>
+    <Head :title="`${user.data.name}'s Profile`" />
     <div v-if="message" class="rounded-md bg-green-50 p-4 mb-2">
         <div class="flex">
             <div class="ml-3">
@@ -19,9 +10,9 @@
         </div>
     </div>
     <Gravatar
-        :profile-url="profileUrl"
-        :user-name="user.name"
-        :gravatar-src="gravatar"
+        :profile-url="user.data.profileUrl"
+        :user-name="user.data.name"
+        :gravatar-src="user.data.gravatar"
     />
 
     <!-- 关注 -->
@@ -56,8 +47,8 @@
                 <div v-for="article in articles.data" :key="article.id">
                     <ShowArticle
                         :article="article"
-                        :user_name="user.name"
-                        :gravatar="gravatar"
+                        :user_name="user.data.name"
+                        :gravatar="user.data.gravatar"
                     />
                 </div>
                 <div class="mt-6 flex justify-center">
@@ -77,9 +68,6 @@ import { router } from "@inertiajs/vue3";
 
 const props = defineProps({
     user: Object,
-    profileUrl: String,
-    gravatar: String,
-    welcome: String,
     message: String,
     articles: Object,
     statuses: Object,

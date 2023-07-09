@@ -3,49 +3,28 @@
         <div
             class="mt-5 flex justify-around divide-gray-200 rounded-lg bg-white shadow"
         >
-            <div class="px-4 py-5 sm:p-6 flex-col">
-                <Link
-                    :href="statuses.fans.link"
-                    class="text-base font-normal whitespace-nowrap text-gray-900"
-                >
-                    粉丝
-                </Link>
-                <div
-                    class="flex items-baseline text-2xl font-semibold text-indigo-600"
-                >
-                    {{ statuses.fans.count }}
-                </div>
-            </div>
-            <div class="px-4 py-5 sm:p-6 flex-col">
-                <Link
-                    :href="statuses.followings.link"
-                    class="text-base font-normal whitespace-nowrap text-gray-900"
-                >
-                    关注
-                </Link>
-                <div
-                    class="flex items-baseline text-2xl font-semibold text-indigo-600"
-                >
-                    {{ statuses.followings.count }}
-                </div>
-            </div>
-            <div class="px-4 py-5 sm:p-6 flex-col">
-                <p
-                    class="text-base font-normal whitespace-nowrap text-gray-900"
-                >
-                    微博
-                </p>
-                <div
-                    class="flex items-baseline text-2xl font-semibold text-indigo-600"
-                >
-                    {{ statuses.articles }}
-                </div>
-            </div>
+            <StatBlock
+                label="粉丝"
+                :count="statuses.fans.count"
+                :link="statuses.fans.link"
+            />
+            <StatBlock
+                label="关注"
+                :count="statuses.followings.count"
+                :link="statuses.followings.link"
+            />
+            <StatBlock
+                label="微博"
+                :count="statuses.articles.count"
+                :link="statuses.articles.link"
+            />
         </div>
     </div>
 </template>
 
 <script setup>
+import StatBlock from "./StatBlock.vue";
+
 defineProps({
     statuses: Object,
 });

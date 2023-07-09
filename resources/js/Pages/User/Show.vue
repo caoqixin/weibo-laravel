@@ -60,6 +60,9 @@
                         :gravatar="gravatar"
                     />
                 </div>
+                <div class="mt-6 flex justify-center">
+                    <Pagination :links="articles.links" />
+                </div>
             </div>
             <div v-else>暂时还没有数据哦!!</div>
         </ul>
@@ -69,6 +72,7 @@
 import ShowArticle from "../../Shared/Components/ShowArticle.vue";
 import Gravatar from "../../Shared/Components/Gravatar.vue";
 import Stats from "../../Shared/Components/Stats.vue";
+import Pagination from "../../Shared/Components/Pagination.vue";
 import { router } from "@inertiajs/vue3";
 
 const props = defineProps({
@@ -86,10 +90,8 @@ const props = defineProps({
 const followOrUnFollow = () => {
     const requestUrl = `/users/followers/${props.user.id}`;
     if (!props.isFollowing) {
-        console.log("follow", requestUrl);
         router.post(requestUrl);
     } else {
-        console.log("unfollow", requestUrl);
         router.delete(requestUrl);
     }
 };

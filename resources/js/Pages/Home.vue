@@ -51,16 +51,13 @@
                         <div v-for="feed in feeds.data" :key="feed.id">
                             <ShowArticle
                                 :article="feed"
-                                :user_name="$page.props.auth.info.name"
-                                :gravatar="$page.props.auth.gravatar"
+                                :user_name="feed.user"
+                                :gravatar="feed.gravatar"
                             />
                         </div>
                     </div>
                     <div v-else>暂时还没有数据哦!!</div>
                 </ul>
-                <div class="mt-6 flex justify-center">
-                    <Pagination :links="feeds.links" />
-                </div>
             </div>
         </div>
 
@@ -75,6 +72,9 @@
                 <Stats :statuses="statuses" />
             </div>
         </div>
+    </div>
+    <div class="mt-6 flex justify-center">
+        <Pagination :links="feeds.links" />
     </div>
 </template>
 <script setup>

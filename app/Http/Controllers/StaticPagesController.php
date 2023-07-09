@@ -18,6 +18,8 @@ class StaticPagesController extends Controller
                 'id' => $feed->id,
                 'content' => $feed->content,
                 'created_at' => $feed->created_at,
+                'user' => $feed->user->name,
+                'gravatar' => $feed->user->gravatar('140'),
                 'can' => [
                     'delete' => Auth::user()->can('delete', $feed)
                 ]
@@ -29,14 +31,14 @@ class StaticPagesController extends Controller
             'message' => session()->has('message') ? session()->get('message') : '',
             'feeds' => $feeds,
             'statuses' => [
-                'articles' => Auth::user()->articles()->count(),
+                'articles' => Auth::check() ? Auth::user()->articles()->count() : '',
                 'fans' => [
-                    'count' => count(Auth::user()->fans),
-                    'link' => route('users.fans', Auth::user()->id)
+                    'count' => Auth::check() ? count(Auth::user()->fans) : '',
+                    'link' => Auth::check() ? route('users.fans', Auth::user()->id) : ''
                 ],
                 'followings' => [
-                    'count' => count(Auth::user()->followings),
-                    'link' => route('users.followings', Auth::user()->id)
+                    'count' => Auth::check() ? count(Auth::user()->followings) : '',
+                    'link' => Auth::check() ? route('users.followings', Auth::user()->id) : ''
                 ]
             ]
         ]);
